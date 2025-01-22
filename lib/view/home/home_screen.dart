@@ -1,18 +1,23 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:newspulse/controller/news_controller.dart';
 import 'package:newspulse/utils/color.dart';
-import 'package:newspulse/view/home/widgets/today_header.dart'; // Import the intl package
+import 'package:newspulse/view/home/widgets/today_header.dart';
+import 'package:newspulse/view/home/widgets/top_headlines_heading.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    
+    final NewsController newsController = Get.put(NewsController());
 
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
-        backgroundColor: Colors.teal.shade900,
+        backgroundColor: appBarColor,
         leading: Icon(Icons.arrow_back, color: whiteColor),
         title: Row(
           children: [
@@ -32,84 +37,40 @@ class HomeScreen extends StatelessWidget {
               padding: const EdgeInsets.only(top: 16, left: 16),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Top Headlines",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                  TopHeadLinesHeading(),
+                  const SizedBox(height: 10),
+                  // Horizontal List with infinite scrolling
+                  Obx(() {
+                    if (newsController.isLoading.value) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: newsController.headlines.map((article) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 20.0),
+                            child: TopHeadlineCard(
+                              imageUrl: article.urlToImage ?? "assets/news1.jpg",
+                              title: article.title,
+                              date: article.publishedAt,
+                            ),
+                          );
+                        }).toList(),
                       ),
-                      Text(
-                        "See all",
-                        style: TextStyle(
-                          color: grey,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  // Horizontal List
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        TopHeadlineCard(
-                          imageUrl: "assets/news1.jpg",
-                          title:
-                              "Global Summit on Climate Change: Historic Agreement Reached",
-                          date: "Jun 9, 2023",
-                        ),
-                        SizedBox(width: 20),
-                        TopHeadlineCard(
-                          imageUrl: "assets/news1.jpg",
-                          title:
-                              "Tech Companies Roll Out AI-powered Innovations",
-                          date: "Jun 10, 2023",
-                        ),
-                      ],
-                    ),
-                  ),
+                    );
+                  }),
                 ],
               ),
             ),
-            // All News Section
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "All news",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  NewsCard(
-                    category: "SCIENCE",
-                    title: "ISRO holds static test of Gaganyaan escape motor",
-                    imageUrl: "assets/news1.jpg",
-                  ),
-                  SizedBox(height: 20),
-                  NewsCard(
-                    category: "WORLD",
-                    title: "Walmart expands globally with new innovations",
-                    imageUrl: "assets/news1.jpg",
-                  ),
-                ],
-              ),
-            )
           ],
         ),
       ),
     );
   }
 }
+
 
 class TopHeadlineCard extends StatelessWidget {
   final String imageUrl;
@@ -126,6 +87,9 @@ class TopHeadlineCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    // Format the date
+    DateTime parsedDate = DateTime.parse(date);
+    String formattedDate = DateFormat('MMM d, yyyy').format(parsedDate);
 
     return Container(
       width: screenWidth * 0.8,
@@ -143,11 +107,17 @@ class TopHeadlineCard extends StatelessWidget {
             child: Center(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: Image.asset(
-                  imageUrl,
+                child:  CachedNetworkImage(
+                  imageUrl: imageUrl.isNotEmpty ? imageUrl : "assets/news1.jpg",  
                   height: screenWidth * 0.43,
                   width: screenWidth * 0.8,
                   fit: BoxFit.cover,
+                  placeholder: (context, url) => Center(child: const CircularProgressIndicator()), 
+                  errorWidget: (context, url, error) => const Icon(
+                    Icons.broken_image,
+                    size: 50,
+                    color: Colors.grey,
+                  ),  // Fallback error icon
                 ),
               ),
             ),
@@ -170,7 +140,7 @@ class TopHeadlineCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  date,
+                  formattedDate,
                   style: const TextStyle(color: grey),
                 ),
               ],

@@ -26,7 +26,7 @@ class Date extends StatelessWidget {
         Text(
           todayDate,
           style: const TextStyle(
-            color: grey,
+            color: black,
             fontSize: 16,
             fontWeight: FontWeight.w400,
           ),
