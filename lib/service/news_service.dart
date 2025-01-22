@@ -5,9 +5,9 @@ import 'package:newspulse/model/news_model.dart';
 
 class NewsService {
   final String headlineApi =
-      "https://newsapi.org/v2/top-headlines?country=us&apiKey=6191b530f66447e6a047a7593605fde2";
+      "https://newsapi.org/v2/top-headlines?country=us&apiKey=4b0ccce03d5f419587a5533939d0e768";
   final String allNewsApi =
-      "https://newsapi.org/v2/everything?q=general&apiKey=6191b530f66447e6a047a7593605fde2";
+      "https://newsapi.org/v2/everything?q=general&apiKey=4b0ccce03d5f419587a5533939d0e768";
 
   Future<NewsResponse> fetchTopHeadlines() async {
     final response = await http.get(Uri.parse(headlineApi));

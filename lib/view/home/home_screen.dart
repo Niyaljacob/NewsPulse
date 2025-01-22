@@ -53,17 +53,47 @@ class HomeScreen extends StatelessWidget {
                             padding: const EdgeInsets.only(right: 20.0),
                             child: TopHeadlineCard(
                               imageUrl: article.urlToImage ?? "assets/news1.jpg",
-                              title: article.title,
+                              description: article.title,
                               date: article.publishedAt,
                             ),
                           );
                         }).toList(),
                       ),
                     );
-                  }),
+                  }
+                  ),
                 ],
               ),
             ),
+            // All News Section
+            
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "All news",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  NewsCard(
+                    category: "SCIENCE",
+                    title: "ISRO holds static test of Gaganyaan escape motor",
+                    imageUrl: "assets/news1.jpg",
+                  ),
+                  SizedBox(height: 20),
+                  NewsCard(
+                    category: "WORLD",
+                    title: "Walmart expands globally with new innovations",
+                    imageUrl: "assets/news1.jpg",
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
@@ -74,13 +104,13 @@ class HomeScreen extends StatelessWidget {
 
 class TopHeadlineCard extends StatelessWidget {
   final String imageUrl;
-  final String title;
+  final String description;
   final String date;
 
   const TopHeadlineCard({
     super.key,
     required this.imageUrl,
-    required this.title,
+    required this.description,
     required this.date,
   });
 
@@ -125,7 +155,7 @@ class TopHeadlineCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              title,
+              description,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(

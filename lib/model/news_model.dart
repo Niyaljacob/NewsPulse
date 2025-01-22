@@ -29,6 +29,7 @@ class Article {
   final String? urlToImage;
   final String publishedAt;
   final String content;
+  final String category; // Added category field
 
   Article({
     required this.source,
@@ -39,6 +40,7 @@ class Article {
     this.urlToImage,
     required this.publishedAt,
     required this.content,
+    this.category = "SCIENCE", // Default category value
   });
 
   factory Article.fromJson(Map<String, dynamic> json) {
@@ -51,6 +53,7 @@ class Article {
       urlToImage: json['urlToImage'],
       publishedAt: json['publishedAt'],
       content: json['content'],
+      category: json['category'] ?? "SCIENCE", // Set default category if null
     );
   }
 }
