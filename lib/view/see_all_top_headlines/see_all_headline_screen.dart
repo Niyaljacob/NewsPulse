@@ -25,7 +25,7 @@ class SeeAllHeadlineScreen extends StatelessWidget {
                 return const Center(child: CircularProgressIndicator());
               }
 
-              return Expanded( // Use Expanded to fill available space
+              return Expanded( 
                 child: ListView.builder(
                   itemCount: newsController.headlines.length,
                   itemBuilder: (context, index) {

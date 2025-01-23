@@ -24,16 +24,43 @@ class NewsDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (imageUrl.isNotEmpty)
             ClipRRect(
-              child: Image.network(
-                imageUrl,
-                fit: BoxFit.cover,
+              child: AspectRatio(
+                aspectRatio: 16 / 9, // Adjust the aspect ratio as needed
+                child: Image.network(
+                  imageUrl,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    } else {
+                      return Container(
+                        alignment: Alignment.center,
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                              : null,
+                        ),
+                      );
+                    }
+                  },
+                  errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                    return Container(
+                      color: Colors.grey,
+                      alignment: Alignment.center,
+                      child: const Icon(
+                        Icons.error,
+                        color: Colors.red,
+                        size: 40,
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           const SizedBox(height: 16),
@@ -42,20 +69,19 @@ class NewsDetailsView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
-                //Author
+                // Author
                 Author(screenWidth: screenWidth, author: author),
                 const SizedBox(height: 16),
 
-                //Description
+                // Description
                 Description(description: description),
                 const SizedBox(height: 16),
 
-                //Content
+                // Content
                 Content(content: content),
                 const SizedBox(height: 8),
 
-                //url
+                // URL
                 Url(url: url),
               ],
             ),
@@ -66,4 +92,3 @@ class NewsDetailsView extends StatelessWidget {
     );
   }
 }
-
