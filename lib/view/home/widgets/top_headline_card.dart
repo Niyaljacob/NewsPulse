@@ -7,18 +7,24 @@ import 'package:newspulse/view/news_details/news_details_screen.dart';
 
 class TopHeadlineCard extends StatelessWidget {
   final String imageUrl;
-  final String description;
+  final String title;
   final String date;
   final String id;
   final String name;
+  final String author;
+  final String description;
+  final String content;
+  final String url;
+  
 
   const TopHeadlineCard({
     super.key,
     required this.imageUrl,
-    required this.description,
+    required this.title,
     required this.date,
     required this.id,
-    required this.name,
+    required this.name, 
+    required this.author, required this.description, required this.content, required this.url, 
   });
 
   @override
@@ -36,6 +42,10 @@ class TopHeadlineCard extends StatelessWidget {
               id: id,
               name: name,
               imageUrl: imageUrl,
+              author:author,
+              description:title,
+              content:content,
+              url:url,
             ),
           ),
         );
@@ -75,7 +85,7 @@ class TopHeadlineCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                description,
+                title,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -84,6 +94,7 @@ class TopHeadlineCard extends StatelessWidget {
                 ),
               ),
             ),
+            
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Row(

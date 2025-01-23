@@ -39,10 +39,13 @@ class TopHeadLine extends StatelessWidget {
                       id: article.source.id ?? "Unknown ID",
                       imageUrl: article.urlToImage ??
                           placeholder, // Provide a default image
-                      description: article.title ??
+                      title: article.title ??
                           "No title available", // Provide a default title
                       date: article.publishedAt ??
-                          "Unknown date", // Provide a default date
+                          "Unknown date", 
+                          author: article.author ?? "Unknown", // Provide a default date
+                      description:article.description ?? "Unknown", content: article.content ?? "Unknown", 
+                      url: article.url ?? "Unknown",
                     ),
                   );
                 }).toList(),

@@ -39,7 +39,7 @@ class NewsController extends GetxController {
     } catch (e) {
       print("Error fetching all news: $e");
     } finally {
-      isAllNewsLoading(false); // Set loading state to false
+      isAllNewsLoading(false); // Set loading state to false  
     }
   }
 }

@@ -40,9 +40,10 @@ class HomeScreen extends StatelessWidget {
 
             //All News Heading Text
             AllNewsHeadingText(),
-            
+
             // All News Section
             AllNews(newsController: newsController),
+
           ],
         ),
       ),

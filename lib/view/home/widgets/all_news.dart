@@ -39,7 +39,12 @@ class AllNews extends StatelessWidget {
                   id: article.source.id ??
                           "Unknown source", 
                           name: article.source.name ??
-                          "Unknown source", // Default image if none exists
+                          "Unknown source",
+                           author: article.author ?? "Unknown", 
+                           description: article.description ?? "UnKnown", 
+                           content: article.content ?? "UnKnown",
+                            url: article.url ?? "UnKown",
+                     // Default image if none exists
             ),
           );
         },
