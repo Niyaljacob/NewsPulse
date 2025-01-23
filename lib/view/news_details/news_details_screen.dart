@@ -40,10 +40,8 @@ void openArticle(String url) async {
   try {
     final Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
-      // Open in the default platform browser or app
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
-      // Show Snackbar if the URL cannot be launched
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Could not open the article.")),
       );
@@ -51,8 +49,8 @@ void openArticle(String url) async {
   } catch (e) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("An error occurred while opening the article.")),
-    );
-  }
+);
+}
 }
 
 
@@ -115,7 +113,7 @@ void openArticle(String url) async {
                   ),
                   const SizedBox(height: 8),
                   GestureDetector(
-                    onTap: () => openArticle("https://www.wsj.com/world/india/popcorn-tax-india-government-three-rates-6b6499eb"),
+                    onTap: () => openArticle(url),
                     child: const Text(
                       "Read Full Article",
                       style: TextStyle(
