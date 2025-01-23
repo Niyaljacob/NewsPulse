@@ -1,0 +1,60 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:newspulse/utils/color.dart';
+
+class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final TextEditingController searchController;
+  final RxString searchQuery;
+
+  const SearchAppBar({
+    Key? key,
+    required this.searchController,
+    required this.searchQuery,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      leading: Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
+      automaticallyImplyLeading: false,
+      flexibleSpace: Padding(
+        padding: const EdgeInsets.only(left: 50, top: 20, right: 10),
+        child: TextField(
+          controller: searchController,
+          autofocus: true, // Automatically focus and show the keyboard
+          onChanged: (value) {
+            searchQuery.value = value.toLowerCase();
+          },
+          decoration: InputDecoration(
+            hintText: 'Search news...',
+            hintStyle: TextStyle(color: Colors.grey.shade600),
+            filled: true,
+            fillColor: Colors.white,
+            prefixIcon: Icon(Icons.search, color: Colors.grey.shade600),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25.0),
+              borderSide: BorderSide(color: Colors.transparent),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25.0),
+              borderSide: BorderSide(color: appBarColor),
+            ),
+            contentPadding: const EdgeInsets.all(12.0),
+          ),
+          style: TextStyle(color: Colors.black, fontSize: 16.0),
+        ),
+      ),
+      backgroundColor: appBarColor,
+      elevation: 0,
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(80.0);
+}

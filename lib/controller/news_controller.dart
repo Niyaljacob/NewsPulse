@@ -9,6 +9,7 @@ class NewsController extends GetxController {
   var isLoading = true.obs; // Loading state for both headlines and all news
   var isAllNewsLoading = true.obs; // Loading state for all news
   
+  
 
   @override
   void onInit() {

@@ -6,7 +6,7 @@ import 'package:newspulse/view/home/widgets/all_news.dart';
 import 'package:newspulse/view/home/widgets/allnewsheadingtext.dart';
 import 'package:newspulse/view/home/widgets/today_header.dart';
 import 'package:newspulse/view/home/widgets/top_headline.dart';
-
+import 'package:newspulse/view/search_page/search_screnn.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -16,38 +16,54 @@ class HomeScreen extends StatelessWidget {
     final NewsController newsController = Get.put(NewsController());
 
     return Scaffold(
-
+      backgroundColor: whiteColor,
       appBar: AppBar(
         backgroundColor: appBarColor,
         leading: Icon(Icons.arrow_back, color: whiteColor),
         title: Row(
           children: [
             Spacer(),
-            Icon(Icons.search, color: whiteColor),
+            IconButton(icon: Icon(Icons.search), onPressed: () { 
+              Navigator.push(context, MaterialPageRoute(builder: (_){
+                return SearchScreen();
+              }
+              ))
+              ;
+             },)
           ],
         ),
         elevation: 0,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Date
-            TodayHeader(),
-            // Top Headlines Section
-            TopHeadLine(newsController: newsController),
-            
-            const SizedBox(height: 10),
+      body: Obx(() {
+        // If data is loading, show the progress indicator
+        if (newsController.isLoading.value) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: appBarColor,
+            ),
+          );
+        } else {
+          // If data is loaded, show the content
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                // Date
+                TodayHeader(),
+                // Top Headlines Section
+                TopHeadLine(newsController: newsController),
 
-            //All News Heading Text
-            AllNewsHeadingText(),
+                const SizedBox(height: 10),
 
-            // All News Section
-            AllNews(newsController: newsController),
+                // All News Heading Text
+                AllNewsHeadingText(),
 
-          ],
-        ),
-      ),
+                // All News Section
+                AllNews(newsController: newsController),
+              ],
+            ),
+          );
+        }
+      }),
     );
   }
 }
-

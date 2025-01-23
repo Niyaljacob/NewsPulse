@@ -36,26 +36,19 @@ class NewsDetailsScreen extends StatelessWidget {
 
    
 
-void openArticle(String url) async {
-  try {
-    final Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Could not open the article.")),
-      );
+Future<void> _launchInBrowser(Uri url) async {
+      if (!await launchUrl(
+        url,
+        mode: LaunchMode.externalApplication,
+      )) {
+        throw Exception('Could not launch $url');
+      }
     }
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("An error occurred while opening the article.")),
-);
-}
-}
 
 
     return Scaffold(
       appBar: AppBar(
+        
         backgroundColor: appBarColor,
       ),
       body: SingleChildScrollView(
@@ -113,7 +106,7 @@ void openArticle(String url) async {
                   ),
                   const SizedBox(height: 8),
                   GestureDetector(
-                    onTap: () => openArticle(url),
+                    onTap: () => _launchInBrowser(Uri.parse(url)),
                     child: const Text(
                       "Read Full Article",
                       style: TextStyle(
