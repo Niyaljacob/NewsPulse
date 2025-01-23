@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
         title: Row(
           children: [
             Spacer(),
-            IconButton(icon: Icon(Icons.search), onPressed: () { 
+            IconButton(icon: Icon(Icons.search,color: whiteColor,), onPressed: () { 
               Navigator.push(context, MaterialPageRoute(builder: (_){
                 return SearchScreen();
               }
